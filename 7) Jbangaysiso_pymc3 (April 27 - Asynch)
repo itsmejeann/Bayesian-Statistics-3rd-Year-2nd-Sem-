@@ -1,0 +1,36 @@
+@author: Jbangaysiso
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import BayesianRidge
+
+# Generate some data
+np.random.seed(42)
+x = np.linspace(0, 10, 100)
+true_slope = 2
+true_intercept = 1
+true_sigma = 0.5
+y = true_slope * x + true_intercept + np.random.normal(scale=true_sigma, size=len(x))
+
+# Reshape x to fit sklearn input format
+X = x.reshape(-1, 1)
+
+# Create and fit Bayesian regression model
+bayesian_reg = BayesianRidge()
+bayesian_reg.fit(X, y)
+
+# Predictions
+y_pred, y_std = bayesian_reg.predict(X, return_std=True)
+
+# Plotting
+plt.figure(figsize=(10, 6))
+plt.scatter(x, y, label='Data')
+plt.plot(x, y_pred, color='red', label='Bayesian Regression')
+plt.fill_between(x, y_pred - y_std, y_pred + y_std, color='gray', alpha=0.3)
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Bayesian Regression')
+plt.legend()
+plt.savefig('bayesian_regression_plot.png')
+plt.show()
