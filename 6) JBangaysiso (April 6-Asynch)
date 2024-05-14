@@ -1,0 +1,48 @@
+import numpy as np
+import matplotlib.pyplot as plt
+# Generate some observed data
+data = np.random.uniform(0, 10, size=100)
+# Define prior distributions for 'a' and 'b'
+prior_a = np.ones_like(data)
+prior_b = np.ones_like(data)
+# Compute the posterior distributions
+posterior_a = np.minimum(data, 10)
+posterior_b = np.minimum(10 - data, 10)
+# Compute posterior mean and credible intervals
+posterior_mean_a = posterior_a.mean()
+posterior_mean_b = posterior_b.mean()
+credible_interval_a = np.percentile(posterior_a, [2.5, 97.5])
+credible_interval_b = np.percentile(posterior_b, [2.5, 97.5])
+# Plotting
+
+plt.figure(figsize=(10, 6))
+plt.subplot(2, 2, 1)
+plt.hist(prior_a, bins=20, density=True, color='blue', alpha=0.5)
+plt.title("Prior Distribution of 'a'")
+plt.xlabel("a")
+plt.ylabel("Density")
+plt.subplot(2, 2, 2)
+plt.hist(posterior_a, bins=20, density=True, color='green', alpha=0.5)
+plt.title("Posterior Distribution of 'a'")
+plt.axvline(posterior_mean_a, color='red', linestyle='--', label='Posterior Mean')
+plt.axvline(credible_interval_a[0], color='orange', linestyle='--', label='95% Credible Interval')
+plt.axvline(credible_interval_a[1], color='orange', linestyle='--')
+plt.xlabel("a")
+plt.ylabel("Density")
+plt.legend()
+plt.subplot(2, 2, 3)
+plt.hist(prior_b, bins=20, density=True, color='blue', alpha=0.5)
+plt.title("Prior Distribution of 'b'")
+plt.xlabel("b")
+plt.ylabel("Density")
+plt.subplot(2, 2, 4)
+plt.hist(posterior_b, bins=20, density=True, color='green', alpha=0.5)
+plt.title("Posterior Distribution of 'b'")
+plt.axvline(posterior_mean_b, color='red', linestyle='--', label='Posterior Mean')
+plt.axvline(credible_interval_b[0], color='orange', linestyle='--', label='95% Credible Interval')
+plt.axvline(credible_interval_b[1], color='orange', linestyle='--')
+plt.xlabel("b")
+plt.ylabel("Density")
+plt.legend()
+plt.tight_layout()
+plt.show()
